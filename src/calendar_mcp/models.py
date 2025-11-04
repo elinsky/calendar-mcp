@@ -156,7 +156,7 @@ class Event:
                 interval=rule.interval(),
                 days_of_week=days,
                 # Only set one of end_date or occurrence_count
-                end_date=rule.recurrenceEnd().endDate()
+                end_date=convert_datetime(rule.recurrenceEnd().endDate())
                 if rule.recurrenceEnd() and not rule.recurrenceEnd().occurrenceCount()
                 else None,
                 occurrence_count=rule.recurrenceEnd().occurrenceCount()
@@ -166,8 +166,8 @@ class Event:
 
         return cls(
             title=ekevent.title(),
-            start_time=ekevent.startDate(),
-            end_time=ekevent.endDate(),
+            start_time=convert_datetime(ekevent.startDate()),
+            end_time=convert_datetime(ekevent.endDate()),
             calendar_name=ekevent.calendar().title(),
             location=ekevent.location(),
             notes=ekevent.notes(),
@@ -179,7 +179,7 @@ class Event:
             status=ekevent.status(),
             organizer=str(ekevent.organizer().name()) if ekevent.organizer() else None,
             attendees=attendees,
-            last_modified=ekevent.lastModifiedDate(),
+            last_modified=convert_datetime(ekevent.lastModifiedDate()) if ekevent.lastModifiedDate() else None,
             identifier=ekevent.eventIdentifier(),
             _raw_event=ekevent,
         )
